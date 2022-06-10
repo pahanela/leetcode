@@ -8,9 +8,6 @@ public:
         unordered_map <char, int> chars;
         for(char& c : s) {
             if (chars.count(c)) {
-                if (counter > maxLen) {
-                    maxLen = counter;
-                }
                 if (chars[c] > start)
                     start = chars[c];
                 counter = i - start;
@@ -20,10 +17,10 @@ public:
                 chars.insert({c, i});
                 counter++;
             }
+            if (counter > maxLen)
+                maxLen = counter;
             i++;
         }
-        if (counter > maxLen)
-            maxLen = counter;
         return maxLen;
     }
 };
