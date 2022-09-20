@@ -3,12 +3,12 @@ public:
     bool isValid(string s) {
         bool rtrn = true;
         vector<char> brackets;
-        for (char const &c : s) {
-            switch (c) {
+        for (int i = 0; i < s.size() && rtrn == true; ++i) {
+            switch (s[i]) {
                 case '(':
                 case '{':
                 case '[':
-                    brackets.push_back(c);
+                    brackets.push_back(s[i]);
                     break;
                 case ')':
                     if (brackets.size() > 0 && brackets.back() == '(') {
@@ -16,21 +16,21 @@ public:
                         break;
                     }
                     else
-                        return false;
+                        rtrn = false;
                 case '}':
                     if (brackets.size() > 0 && brackets.back() == '{') {
                         brackets.pop_back();
                         break;
                     }
-                    else
-                        return false;
+                    else rtrn = false;
                 case ']':
                     if (brackets.size() > 0 && brackets.back() == '[') {
                         brackets.pop_back();
                         break;
                     }
-                    else
-                        return false;
+                    else rtrn = false;
+                default:
+                    break;
             }
             
         }
