@@ -11,21 +11,21 @@
 class Solution {
 public:
     ListNode* removeNthFromEnd(ListNode* head, int n) {
-        int depth = 0;
         ListNode* cur = head;
         ListNode* prev = head;
-        while (cur != nullptr) {
+        // count only leading pointer first to delay the previous one
+        int i = 0;
+        for (i = 0; i <= n && cur != nullptr; i++)
             cur = cur->next;
-            depth++;
-        }
-        cur = head;
-        for (int i = 0; i < depth - n; i++) {
-            prev = cur;
-            cur = cur->next;
-        }
-        prev->next = cur->next;
-        if (depth - n == 0) {
+        if (i == n)
             head = head->next;
+        else {      
+            // count both pointers
+            for (int j = 0; cur != nullptr; j++) {
+                prev = prev->next;
+                cur = cur->next;
+            }
+            prev->next = prev->next->next;
         }
         return head;
     }
