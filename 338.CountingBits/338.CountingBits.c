@@ -16,3 +16,16 @@ int* countBits(int n, int* returnSize){
     return rtrn;
 }
 
+
+// Brian Kernighan's algorithm
+#ifdef FASTER_SOLUTION
+int* countBits(int n, int* returnSize){
+    *returnSize = n + 1;
+    int *rtrn = (int *) malloc(*returnSize * sizeof(int));
+    rtrn[0] = 0;
+    for (int i = 1; i <= n; i++) {
+        rtrn[i] = rtrn[i & i-1] + 1;
+    }
+    return rtrn;
+}
+#endif
