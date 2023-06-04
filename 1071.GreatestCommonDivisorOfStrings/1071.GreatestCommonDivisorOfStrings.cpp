@@ -7,7 +7,7 @@ public:
 
         // find largest common prefix
         int i = 0;
-        while (str1[i] == str2[i])
+        while (str1[i] == str2[i] && i < str1.length() && i < str2.length())
             i++;
         commonStr = str1.substr(0, i);
 
