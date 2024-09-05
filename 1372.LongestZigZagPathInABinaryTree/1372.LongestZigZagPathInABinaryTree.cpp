@@ -41,11 +41,15 @@ public:
 
         if (root) {
             len++;
-            if (dir)
-                nextNode = root->right;
-            else
-                nextNode = root->left;
-            len += countAltNodes(nextNode, !dir);
+            // continue if the node is not visited yet
+            if (root->val) {
+                if (dir)
+                    nextNode = root->right;
+                else
+                    nextNode = root->left;
+                len += countAltNodes(nextNode, !dir);
+                root->val = 0; // mark the node as visited
+            }
         }
 
         return len;
