@@ -12,18 +12,6 @@
 class Solution {
 public:
     TreeNode* deleteNode(TreeNode* root, int key) {
-        TreeNode* rtrn = delNode(root, key, nullptr, false);
-        return rtrn;
-    }
-
-    /**
-     * @brief Deletes the node, frees memory, and links the incoming link
-     * @param[in] root - root of the tree to search
-     * @param[in] key - key to match
-     * @param[in] parent - parent node to link the new one to
-     * @param[in] right - flag to indicate the linkage to the parent from the left or right 
-    */
-    TreeNode* delNode(TreeNode* root, int key, TreeNode* parent, bool right) {
         TreeNode* repNode = root;
         if (root) {
             if (root->val == key) {
@@ -40,17 +28,11 @@ public:
                     repNode = root->left;
                 else
                     repNode = nullptr;
-                if (parent) {
-                    if (right)
-                        parent->right = repNode;
-                    else
-                        parent->left = repNode;
-                }
                 delete(root);
             }
             else {
-                delNode(root->left, key, root, false);
-                delNode(root->right, key, root, true);
+                root->left = deleteNode(root->left, key);
+                root->right = deleteNode(root->right, key);
             }
         }
         return repNode;
