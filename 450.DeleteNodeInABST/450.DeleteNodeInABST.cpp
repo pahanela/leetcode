@@ -12,63 +12,48 @@
 class Solution {
 public:
     TreeNode* deleteNode(TreeNode* root, int key) {
-        TreeNode* rtrn = root;
+        TreeNode* rtrn = delNode(root, key, nullptr, false);
+        return rtrn;
+    }
+
+    /**
+     * @brief Deletes the node, frees memory, and links the incoming link
+     * @param[in] root - root of the tree to search
+     * @param[in] key - key to match
+     * @param[in] parent - parent node to link the new one to
+     * @param[in] right - flag to indicate the linkage to the parent from the left or right 
+    */
+    TreeNode* delNode(TreeNode* root, int key, TreeNode* parent, bool right) {
+        TreeNode* repNode = root;
         if (root) {
             if (root->val == key) {
-                if (root->left == nullptr && root->right == nullptr)
-                    root = nullptr;
-                else if (root->left == nullptr)
-                    root = root->right;
-                else if (root->right == nullptr)
-                    root = root->left;
-                else {
-                    if (root->left->left == nullptr) {
-                        root->left->left = root->right;
-                        root = root->left;
-                    }
-                    else if (root->left->right == nullptr) {
-                        root->left->right = root->right;
-                        root = root->left;
-                    }
-                    else if (root->right->left == nullptr) {
-                        root->right->left = root->left;
-                        root = root->right;
-                    }
-                    else if (root->right->right == nullptr) {
-                        root->right->right = root->left;
-                        root = root->right;
-                    }
+                if (root->left && root->right) {
+                    repNode = root->right;
+                    TreeNode* curNode = repNode;
+                    while (curNode->left)
+                        curNode = curNode->left;
+                    curNode->left = root->left;
                 }
-                rtrn = root;
-            }
-            else if (root->left && root->left->val == key) {
-                if (root->left->left == nullptr)
-                    root->left = root->left->right;
-                else if (root->left->left == nullptr)
-                    root->left = root->left->left;
-                else {
-                    TreeNode* temp = root->left->right;
-                    root->left = root->left->left;
-                    root->left->right = temp;
+                else if (!(root->left) && root->right)
+                    repNode = root->right;
+                else if ((root->left) && !(root->right))
+                    repNode = root->left;
+                else
+                    repNode = nullptr;
+                if (parent) {
+                    if (right)
+                        parent->right = repNode;
+                    else
+                        parent->left = repNode;
                 }
-            }
-            else if (root->right && root->right->val == key) {
-                if (root->right->left == nullptr)
-                    root->right = root->right->right;
-                else if (root->right->right == nullptr)
-                    root->right = root->right->left;
-                else {
-                    TreeNode* temp = root->left->right;
-                    root->left = root->left->left;
-                    root->left->right = temp;
-                }
+                delete(root);
             }
             else {
-                deleteNode(root->left, key);
-                deleteNode(root->right, key);
+                delNode(root->left, key, root, false);
+                delNode(root->right, key, root, true);
             }
         }
-        return rtrn;
+        return repNode;
     }
 };
 
