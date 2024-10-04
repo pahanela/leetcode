@@ -1,4 +1,4 @@
-# editorial solution
+// editorial solution
 class Solution {
 public:
 
