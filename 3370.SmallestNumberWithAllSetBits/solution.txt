@@ -1,0 +1,14 @@
+class Solution {
+public:
+    int smallestNumber(int n) {
+        int rtrn = 1;
+        
+        while (rtrn <= n)
+            rtrn <<= 1;
+
+        rtrn--;
+
+        return rtrn;
+    }
+};
+
