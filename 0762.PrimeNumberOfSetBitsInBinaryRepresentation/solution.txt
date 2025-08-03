@@ -1,0 +1,43 @@
+class Solution {
+public:
+    int countPrimeSetBits(int left, int right) {
+        // identify list of possible primes
+        vector<int> primes;
+        // within the range of bits
+        for (int i = 2; i < sizeof(int) * 8; ++i) {
+            bool prime = true;
+            for (int j = 2; j < i; ++j) {
+                if (i % j == 0) {
+                    prime = false;
+                    break;
+                }
+            }
+            if (prime)
+                primes.push_back(i);
+        }
+
+        // storage for primes for each value matching the vector index
+        // size of largest prime number possible
+        vector<int> primes_count(primes.back());
+
+        for (int cur = left; cur <= right; ++cur) {
+            // count ones
+            int ones = 0;
+            int num = cur;
+            while (num > 0) {
+                num &= num - 1;
+                ones++;
+            }
+            // check for prime and count it if it is
+            if (ones >= 2 && (find(primes.begin(), primes.end(), ones) != primes.end()))
+                primes_count[ones]++;
+        }
+
+        int total = 0;
+        for (auto & el : primes_count)
+            total += el;
+
+        return total;
+    }
+};
+
